@@ -1,4 +1,3 @@
-import React from 'react'
 import './Page.css' // Stil dosyasını ekleyin
 import { useNavigate } from 'react-router'
 
