@@ -1,0 +1,77 @@
+.Form {
+  align-content: center;
+  text-align: center;
+}
+
+.Sidebar {
+  background-color: transparent;
+}
+
+.register-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+}
+
+.profile-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.slider-item {
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  margin: 10px;
+}
+
+.card-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Maksimum 3 satır */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .slider-item {
+    max-width: 100%; /* Mobil cihazlarda tam genişlik */
+  }
+
+  .slick-slide {
+    padding: 0 5px; /* Mobil cihazlarda kaydırıcı öğeleri arasındaki boşluk */
+  }
+}
+
+
+.not-found-container {
+  text-align: center;
+  padding: 50px;
+}
+
+.not-found-title {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.not-found-message {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+}
+
+.not-found-link {
+  font-size: 1em;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.not-found-link:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,29 @@
+.Navbar {
+  width: 100vw;
+  height: 5vh;
+}
+
+.Main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  @media (max-width: 767px) {
+    .Main {
+      padding: 10px;
+    }
+  }
+
+  .bottom-bar {
+    background-color: rgba(125, 128, 150, 0.4); /* Saydam yeşil */
+    border-top: 1px solid #e0e0e0;
+    padding: 10px 0;
+  }
+
+.no-overflow {
+  overflow: hidden;
+}
