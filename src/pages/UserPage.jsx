@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { GlobalContext } from "../context/GlobalState";
 import { Card, Icon } from "semantic-ui-react";
 import UserService from "../services/UserService";
 import ProblemService from "../services/ProblemService";
