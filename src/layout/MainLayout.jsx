@@ -24,7 +24,6 @@ export default function MainLayout() {
         <Route path="/problem/:problemId" element={<ProblemDetails />} />
         <Route path="/homepage" element={<HomePage />} />
         <Route path="aboutus" element={<AboutUsPage />} />
-        <Route path="/" element={<HomePage />} />
         <Route path="/*" element={<NotFoundPage />} />
         {isAuthenticated && (
           <Route path="/myprofile" element={<MyProfilePage />} />

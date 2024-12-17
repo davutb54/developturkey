@@ -111,18 +111,45 @@ export default function CategoriesPage() {
             </Modal.Actions>
           </Modal>
           <Grid columns={2} stackable>
-            <Grid.Column width={3}>
+            <Grid.Column width={3} only="computer">
               <Menu
                 secondary
                 vertical
                 style={{
-                  backgroundColor: "rgba(164,200,166,0.3)",
+                  backgroundColor: "rgba(100,149,237,1)",
                   borderRadius: 10,
                   marginTop: "50px",
                 }}
               >
                 {topics.map((topic) => (
-                  <Menu.Item>
+                  <Menu.Item key={topic.id}>
+                    <Button
+                      content={topic.name}
+                      style={{
+                        backgroundColor: "transparent",
+                        borderRadius: 10,
+                      }}
+                      onClick={() => setTopic(topic.id)}
+                    />
+                  </Menu.Item>
+                ))}
+              </Menu>
+            </Grid.Column>
+            <Grid.Column width={16} only="mobile tablet">
+              <Menu
+                secondary
+                pointing
+                horizontal
+                style={{
+                  overflowX: "auto",
+                  whiteSpace: "nowrap",
+                  backgroundColor: "rgba(100,149,237,0.9)",
+                  borderRadius: 10,
+                  marginTop: "10px",
+                }}
+              >
+                {topics.map((topic) => (
+                  <Menu.Item key={topic.id}>
                     <Button
                       content={topic.name}
                       style={{
@@ -139,7 +166,7 @@ export default function CategoriesPage() {
               <Table
                 inverted
                 style={{
-                  backgroundColor: "rgba(164,200,166,0.8)",
+                  backgroundColor: "rgba(100,149,237,0.8)",
                   marginTop: "50px",
                 }}
               >
@@ -190,7 +217,7 @@ export default function CategoriesPage() {
                       <Table.Cell>
                         <Button
                           style={{
-                            backgroundColor: "rgba(164,200,166,1)",
+                            backgroundColor: "rgba(100,149,237,1)",
                           }}
                           icon="external square alternate"
                           onClick={() => navigate(`/problem/${problem.id}`)}

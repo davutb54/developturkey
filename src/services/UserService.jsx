@@ -2,31 +2,31 @@ import axios from "axios";
 
 export default class UserService {
   getById(id) {
-    return axios.get("https://www.practical-shirley.89-252-187-226.plesk.page/api/User/getbyid?id=" + id);
-  }
-  getByUsername(username) {
-    return axios.get(
-      "https://www.practical-shirley.89-252-187-226.plesk.page/api/User/getbyusername?username=" + username
-    );
+    return axios.get("https://localhost:44305/api/User/getbyid?id=" + id);
   }
 
-  addUser(user) {
-    return axios.post("https://www.practical-shirley.89-252-187-226.plesk.page/api/User/add", user);
+  register(request) {
+    return axios.post("https://localhost:44305/api/User/register", request);
+  }
+
+  login(request) {
+    return axios.post("https://localhost:44305/api/User/login", request);
   }
 
   updateUser(user) {
-    return axios.post("https://www.practical-shirley.89-252-187-226.plesk.page/api/User/update", user);
+    return axios.post("https://localhost:44305/api/User/updatedetails", user);
   }
 
-  updatePassword(id, oldPassword, newPassword) {
+  updatePassword(request) {
     return axios.post(
-      `https://www.practical-shirley.89-252-187-226.plesk.page/api/User/updatepassword?id=${id}&oldPassword=${oldPassword}&newPassword=${newPassword}`
+      "https://localhost:44305/api/User/updatepassword",
+      request
     );
   }
 
   checkUserExists(request) {
     return axios.post(
-      `https://www.practical-shirley.89-252-187-226.plesk.page/api/User/checkuserexists`,
+      "https://localhost:44305/api/User/checkuserexists",
       request
     );
   }

@@ -2,30 +2,30 @@ import axios from "axios";
 
 export default class SolutionService{
     getByProblem(problemId){
-        return axios.get("https://www.practical-shirley.89-252-187-226.plesk.page/api/Solution/getbyproblem?problemId="+problemId)
+        return axios.get("https://localhost:44305/api/Solution/getbyproblem?problemId="+problemId)
     }
 
     addSolution(solution){
-        return axios.post("https://www.practical-shirley.89-252-187-226.plesk.page/api/Solution/add",solution)
+        return axios.post("https://localhost:44305/api/Solution/add",solution)
     }
 
     getAll(){
-        return axios.get("https://www.practical-shirley.89-252-187-226.plesk.page/api/Solution/getall")
+        return axios.get("https://localhost:44305/api/Solution/getall")
     }
 
     getBySender(senderId){
-        return axios.get("https://www.practical-shirley.89-252-187-226.plesk.page/api/Solution/getbysender?senderId="+senderId)
+        return axios.get("https://localhost:44305/api/Solution/getbysender?senderId="+senderId)
     }
 
     getIsHighligted(){
-        return axios.get("https://www.practical-shirley.89-252-187-226.plesk.page/api/Solution/getishighlighted")
+        return axios.get("https://localhost:44305/api/Solution/getishighlighted")
     }
 
     deleteSolution(id){
-        return axios.delete("https://www.practical-shirley.89-252-187-226.plesk.page/api/Solution/delete?id="+id)
+        return axios.delete("https://localhost:44305/api/Solution/delete?id="+id)
     }
 
     updateSolution(solution){
-        return axios.post("https://www.practical-shirley.89-252-187-226.plesk.page/api/Solution/update",solution)
+        return axios.post("https://localhost:44305/api/Solution/update",solution)
     }
 }

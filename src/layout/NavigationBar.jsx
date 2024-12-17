@@ -51,24 +51,27 @@ export default function NavigationBar() {
 
   return (
     <div>
-      <Menu secondary stackable inverted style={{ width: "100%" }}>
+      <Menu tabular stackable inverted style={{ width: "100%", backgroundColor: "rgba(19, 46,55, 0.6)" }}>
         <Menu.Item
           name="home"
           content="Anasayfa"
           icon="home"
           onClick={() => navigate("/homepage")}
+          style={{ color: "yellow" }}
         />
         <Menu.Item
           name="categories"
           content="Kategoriler"
           icon="book"
           onClick={() => navigate("/categories")}
+          style={{ color: "yellow" }}
         />
         <Menu.Item
           name="about"
           content="Hakkımızda"
           icon="users"
           onClick={() => navigate("/aboutus")}
+          style={{ color: "yellow" }}
         />
         <Menu.Menu position="right">
           <Menu.Item>

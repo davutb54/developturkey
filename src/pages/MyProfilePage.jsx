@@ -14,30 +14,29 @@ import "semantic-ui-css/semantic.min.css";
 import UserService from "../services/UserService";
 
 export default function MyProfilePage() {
-  const { authenticatedUser, cities, genders } = useContext(GlobalContext);
+  const { authenticatedUser, cities, genders, setAuthenticatedUser } =
+    useContext(GlobalContext);
   const [user, setUser] = useState({
-    id: authenticatedUser.id,
     name: authenticatedUser.name,
     surname: authenticatedUser.surname,
     email: authenticatedUser.email,
     cityCode: authenticatedUser.cityCode,
     gender: authenticatedUser.gender,
-    userName: authenticatedUser.userName,
-    password: authenticatedUser.password,
-    emailNotificationPermission: authenticatedUser.emailNotificationPermission,
-    isAdmin: authenticatedUser.isAdmin,
-    isReported: authenticatedUser.isReported,
-    isDeleted: authenticatedUser.isDeleted,
-    isBanned: authenticatedUser.isBanned,
   });
   const [isEditing, setIsEditing] = useState(false);
-  const [refresh, setRefresh] = useState(false);
   const [passwords, setPasswords] = useState({
     currentPassword: "",
     newPassword: "",
     confirmNewPassword: "",
   });
   const [isPasswordEditing, setIsPasswordEditing] = useState(false);
+
+  const getLoggedUser = async (userId) => {
+    let userService = new UserService();
+    await userService.getById(userId).then((result) => {
+      setAuthenticatedUser(result.data.data);
+    });
+  };
 
   const handlePasswordEdit = () => {
     setIsPasswordEditing(true);
@@ -68,41 +67,63 @@ export default function MyProfilePage() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(user.email)) {
       alert("Lütfen geçerli bir e-posta adresi girin.");
       return;
     }
     let userService = new UserService();
-    userService
-      .updateUser(user)
+    await userService
+      .updateUser({
+        id: authenticatedUser.id,
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        cityCode: user.cityCode,
+        genderCode: user.gender,
+      })
       .then((response) => {
-        setRefresh(!refresh);
         setIsEditing(false);
+        getLoggedUser(authenticatedUser.id);
       })
       .catch((error) => console.error(error));
   };
 
-  const handlePasswordSubmit = (e) => {
+  const changepassword = async () => {
+    let userService = new UserService();
+    let result = await userService
+      .updatePassword({
+        id: authenticatedUser.id,
+        oldPassword: passwords.currentPassword,
+        newPassword: passwords.newPassword,
+      })
+      .then((result) => {
+        return result.data;
+      });
+    return result;
+  };
+
+  const handlePasswordSubmit = async (e) => {
     if (passwords.newPassword !== passwords.confirmNewPassword) {
       alert("Yeni şifreler eşleşmiyor.");
       return;
     }
-    let userService = new UserService();
-    userService
-      .updatePassword(user.id, passwords.currentPassword, passwords.newPassword)
-      .then((response) => {
-        alert("Şifre başarıyla değiştirildi.");
-        setPasswords({
-          currentPassword: "",
-          newPassword: "",
-          confirmNewPassword: "",
-        });
-        setIsPasswordEditing(false);
-      })
-      .catch((error) => console.error(error));
+
+    const change = await changepassword();
+    if (change.success) {
+      alert("Şifre başarıyla değiştirildi.");
+      setPasswords({
+        currentPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+      });
+      setIsPasswordEditing(false);
+
+      return;
+    }
+
+    alert(change.message);
   };
 
   const handleCancel = () => {
@@ -112,14 +133,6 @@ export default function MyProfilePage() {
       email: authenticatedUser.email,
       cityCode: authenticatedUser.cityCode,
       gender: authenticatedUser.gender,
-      userName: authenticatedUser.userName,
-      password: authenticatedUser.password,
-      emailNotificationPermission:
-        authenticatedUser.emailNotificationPermission,
-      isAdmin: authenticatedUser.isAdmin,
-      isReported: authenticatedUser.isReported,
-      isDeleted: authenticatedUser.isDeleted,
-      isBanned: authenticatedUser.isBanned,
     });
     setIsEditing(false);
   };
@@ -153,7 +166,7 @@ export default function MyProfilePage() {
               <label>İsim</label>
               <input
                 type="text"
-                name="firstName"
+                name="name"
                 value={user.name}
                 onChange={handleChange}
               />
@@ -162,7 +175,7 @@ export default function MyProfilePage() {
               <label>Soyisim</label>
               <input
                 type="text"
-                name="lastName"
+                name="surname"
                 value={user.surname}
                 onChange={handleChange}
               />
@@ -237,22 +250,14 @@ export default function MyProfilePage() {
               </Grid.Column>
               <Grid.Column width={8}>
                 <p>
-                  <strong>Şehir:</strong>{" "}
-                  {
-                    cities.find((c) => c.value === authenticatedUser.cityCode)
-                      .text
-                  }
+                  <strong>Şehir:</strong> {authenticatedUser.cityName}
                 </p>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={8}>
                 <p>
-                  <strong>Cinsiyet:</strong>{" "}
-                  {
-                    genders.find((g) => g.value === authenticatedUser.gender)
-                      .text
-                  }
+                  <strong>Cinsiyet:</strong> {authenticatedUser.gender}
                 </p>
               </Grid.Column>
             </Grid.Row>

@@ -2,10 +2,10 @@ import axios from "axios"
 
 export default class ConstantService{
     getGenders(){
-        return axios.get("https://www.practical-shirley.89-252-187-226.plesk.page/api/Constant/genders")
+        return axios.get("https://localhost:44305/api/Constant/genders")
     }
 
     getCities(){
-        return axios.get("https://www.practical-shirley.89-252-187-226.plesk.page/api/Constant/cities")
+        return axios.get("https://localhost:44305/api/Constant/cities")
     }
 }

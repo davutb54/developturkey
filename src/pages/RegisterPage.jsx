@@ -63,15 +63,15 @@ export default function RegisterPage() {
 
   const checkUserExists = async (username, email) => {
     let userService = new UserService();
-    try {
-      const userExists = await userService
-        .checkUserExists({ username: username, email: email })
-        .then((result) => result.data.data);
-      return userExists;
-    } catch (error) {
-      console.error("Kullanıcı kontrolü yapılamadı:", error);
-      return false;
-    }
+    let result = await userService
+      .checkUserExists({
+        username: username,
+        email: email,
+      })
+      .then((result) => {
+        return result.data;
+      });
+    return result;
   };
 
   const register = async () => {
@@ -99,10 +99,9 @@ export default function RegisterPage() {
       alert("Lütfen tüm alanları doldurun.");
       return;
     }
-
-    const userExists = await checkUserExists(username, email);
-    if (userExists) {
-      alert("Bu kullanıcı adı veya e-posta zaten kullanılıyor.");
+    const a = await checkUserExists(username, email);
+    if (a.success) {
+      alert(a.message);
       return;
     }
 
@@ -115,12 +114,12 @@ export default function RegisterPage() {
       email: email,
       password: password,
       cityCode: city,
-      gender: gender,
+      genderCode: gender,
       emailNotificationPermission: emailCheck,
     };
 
     try {
-      await userService.addUser(user);
+      await userService.register(user);
       navigate("/sign-in");
     } catch (error) {
       console.error("Kullanıcı eklenemedi:", error);
@@ -135,117 +134,119 @@ export default function RegisterPage() {
           <Loader />
         </Dimmer>
       ) : (
-        <Form onSubmit={register}>
-          <Form.Group>
-            <Form.Input
-              width={7}
-              required={true}
-              name="username"
-              placeholder="Kullanıcı Adınızı Belirleyiniz"
-              onChange={changeUsername}
-              label={
-                <label style={{ textAlign: "start", marginLeft: 5 }}>
-                  Kullanıcı Adı
-                </label>
-              }
+        <div style={{ borderRadius: '15px', backgroundColor: '#e0f7fa', padding: '20px' }}>
+          <Form onSubmit={register}>
+            <Form.Group>
+              <Form.Input
+                width={7}
+                required={true}
+                name="username"
+                placeholder="Kullanıcı Adınızı Belirleyiniz"
+                onChange={changeUsername}
+                label={
+                  <label style={{ textAlign: "start", marginLeft: 5 }}>
+                    Kullanıcı Adı
+                  </label>
+                }
+              />
+              <Form.Input
+                width={9}
+                required={true}
+                name="email"
+                placeholder="Email Adresinizi Giriniz"
+                onChange={changeEmail}
+                label={
+                  <label style={{ textAlign: "start", marginLeft: 5, }}>
+                    Email
+                  </label>
+                }
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Input
+                width={6}
+                required={true}
+                name="name"
+                placeholder="İsminizi Giriniz"
+                onChange={changeName}
+                label={
+                  <label style={{ textAlign: "start", marginLeft: 5 }}>
+                    İsim
+                  </label>
+                }
+              />
+              <Form.Input
+                width={5}
+                required={true}
+                name="surname"
+                placeholder="Soyisminizi Giriniz"
+                onChange={changeSurname}
+                label={
+                  <label style={{ textAlign: "start", marginLeft: 5 }}>
+                    Soyisim
+                  </label>
+                }
+              />
+              <Form.Select
+                width={5}
+                required={true}
+                placeholder="Cinsiyetinizi Seçiniz"
+                options={genders}
+                onChange={changeGender}
+                label={
+                  <label style={{ textAlign: "start", marginLeft: 5 }}>
+                    Cinsiyet
+                  </label>
+                }
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Select
+                width={5}
+                required={true}
+                options={cities}
+                placeholder="Şehrinizi Seçiniz"
+                onChange={changeCity}
+                label={
+                  <label style={{ textAlign: "start", marginLeft: 5 }}>
+                    Şehir
+                  </label>
+                }
+              />
+              <Form.Input
+                width={6}
+                required={true}
+                name="password"
+                placeholder="Şifrenizi Belirleyiniz"
+                onChange={changePassword}
+                type="password"
+                label={
+                  <label style={{ textAlign: "start", marginLeft: 5 }}>
+                    Şifre
+                  </label>
+                }
+              />
+              <Form.Input
+                width={6}
+                required={true}
+                name="passwordrepeat"
+                placeholder="Şifrenizi Doğrulayınız"
+                onChange={changePasswordReplay}
+                type="password"
+                label={
+                  <label style={{ textAlign: "start", marginLeft: 5 }}>
+                    Şifre Tekrar
+                  </label>
+                }
+              />
+            </Form.Group>
+            <Form.Checkbox
+              label="Eposta yoluyla bildirimlerimi almak istiyorum"
+              onChange={changeEmailCheck}
             />
-            <Form.Input
-              width={9}
-              required={true}
-              name="email"
-              placeholder="Email Adresinizi Giriniz"
-              onChange={changeEmail}
-              label={
-                <label style={{ textAlign: "start", marginLeft: 5 }}>
-                  Email
-                </label>
-              }
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Input
-              width={6}
-              required={true}
-              name="name"
-              placeholder="İsminizi Giriniz"
-              onChange={changeName}
-              label={
-                <label style={{ textAlign: "start", marginLeft: 5 }}>
-                  İsim
-                </label>
-              }
-            />
-            <Form.Input
-              width={5}
-              required={true}
-              name="surname"
-              placeholder="Soyisminizi Giriniz"
-              onChange={changeSurname}
-              label={
-                <label style={{ textAlign: "start", marginLeft: 5 }}>
-                  Soyisim
-                </label>
-              }
-            />
-            <Form.Select
-              width={5}
-              required={true}
-              placeholder="Cinsiyetinizi Seçiniz"
-              options={genders}
-              onChange={changeGender}
-              label={
-                <label style={{ textAlign: "start", marginLeft: 5 }}>
-                  Cinsiyet
-                </label>
-              }
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Select
-              width={5}
-              required={true}
-              options={cities}
-              placeholder="Şehrinizi Seçiniz"
-              onChange={changeCity}
-              label={
-                <label style={{ textAlign: "start", marginLeft: 5 }}>
-                  Şehir
-                </label>
-              }
-            />
-            <Form.Input
-              width={6}
-              required={true}
-              name="password"
-              placeholder="Şifrenizi Belirleyiniz"
-              onChange={changePassword}
-              type="password"
-              label={
-                <label style={{ textAlign: "start", marginLeft: 5 }}>
-                  Şifre
-                </label>
-              }
-            />
-            <Form.Input
-              width={6}
-              required={true}
-              name="passwordrepeat"
-              placeholder="Şifrenizi Doğrulayınız"
-              onChange={changePasswordReplay}
-              type="password"
-              label={
-                <label style={{ textAlign: "start", marginLeft: 5 }}>
-                  Şifre Tekrar
-                </label>
-              }
-            />
-          </Form.Group>
-          <Form.Checkbox
-            label="Eposta yoluyla bildirimlerimi almak istiyorum"
-            onChange={changeEmailCheck}
-          />
-          <Form.Button content="Kayıt Ol" />
-        </Form>
+            <Form.Button content="Kayıt Ol" />
+          </Form>
+        </div>
       )}
     </Container>
   );

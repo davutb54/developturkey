@@ -27,6 +27,7 @@ export const GlobalProvider = (props) => {
       .getGenders()
       .then((result) => {
         setGenders(result.data.data);
+        console.log(result.data.data)
       })
       .catch((error) => console.error(error));
   }, []);
