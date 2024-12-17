@@ -63,6 +63,10 @@ export default function ProblemDetails() {
 
   const navigate = useNavigate(); // useNavigate hook'u kullanıldı
 
+  const handleUserClick = (userId) => {
+    navigate(`/user/${userId}`);
+  };
+
   useEffect(() => {
     let solutionService = new SolutionService();
     setLoading(true);
@@ -238,7 +242,10 @@ export default function ProblemDetails() {
               style={{ marginLeft: parentId ? "2vw" : "0px", width: "100%" }} // width: "100%" eklendi
             >
               <Comment.Content>
-                <Comment.Author as="a">{comment.senderUsername}</Comment.Author>
+                <Comment.Author as="a" onClick={() => handleUserClick(comment.senderId)} style={{ cursor: "pointer" }}>
+                  {comment.senderIsExpert && <Icon name="star" color="yellow" />} {/* Uzman simgesi */}
+                  {comment.senderUsername}
+                </Comment.Author>
                 <Comment.Metadata>
                   <div>{new Date(comment.createdAt).toLocaleString()}</div>
                 </Comment.Metadata>
@@ -512,7 +519,22 @@ export default function ProblemDetails() {
                   <>
                     <Header as="h2">
                       <Icon name="user" />
-                      <Header.Content>{problem.senderUsername}</Header.Content>
+                      <Header.Content>
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleUserClick(problem.senderId)}
+                        >
+                          {problem.senderUsername}
+                        </span>
+                        {problem.senderIsExpert && (
+                          <Icon
+                            name="star"
+                            color="yellow"
+                            style={{ cursor: "pointer", marginLeft: "5px" }}
+                            onClick={() => handleUserClick(problem.senderId)}
+                          />
+                        )}
+                      </Header.Content>
                     </Header>
                     <Card.Header style={{ marginTop: "10px" }}>
                       {problem.title}
@@ -615,7 +637,10 @@ export default function ProblemDetails() {
                   <>
                     <Header as="h4">{solution.title}</Header>
                     <Card.Meta>
-                      <span className="date">{solution.senderUsername}</span>
+                      <span className="date" onClick={() => handleUserClick(solution.senderId)} style={{ cursor: "pointer" }}>
+                        {solution.senderIsExpert && <Icon name="star" color="yellow" />} {/* Uzman simgesi */}
+                        {solution.senderUsername}
+                      </span>
                     </Card.Meta>
                     <Card.Description
                       style={{
