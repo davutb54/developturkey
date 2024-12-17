@@ -9,7 +9,6 @@ import "./Page.css";
 
 export default function UserPage() {
   const { userId } = useParams();
-  const { cities, genders } = useContext(GlobalContext);
   const [user, setUser] = useState(null);
   const [problems, setProblems] = useState([]);
   const [solutions, setSolutions] = useState([]);
@@ -59,11 +58,6 @@ export default function UserPage() {
     return <div>Kullanıcı bulunamadı</div>;
   }
 
-  const city =
-    cities?.find((c) => c.value === user.cityCode)?.text || "Bilinmiyor";
-  const gender =
-    genders?.find((g) => g.value === user.gender)?.text || "Bilinmiyor";
-
   return (
     <div
       className="profile-container"
@@ -91,10 +85,10 @@ export default function UserPage() {
               <Icon name="mail" /> Email: {user.email}
             </p>
             <p>
-              <Icon name="map marker alternate" /> Şehir: {city}
+              <Icon name="map marker alternate" /> Şehir: {user.cityName}
             </p>
             <p>
-              <Icon name="genderless" /> Cinsiyet: {gender}
+              <Icon name="genderless" /> Cinsiyet: {user.gender}
             </p>
           </Card.Description>
         </Card.Content>
