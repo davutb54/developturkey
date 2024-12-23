@@ -7,6 +7,7 @@ import {
   Grid,
   Header,
   Icon,
+  Image,
   Loader,
   Menu,
   Modal,
@@ -26,6 +27,7 @@ export default function CategoriesPage() {
     description: "",
     cityCode: "",
   });
+  const [imageUrl, setImageUrl] = useState("universities");
 
   const navigate = useNavigate();
 
@@ -129,7 +131,10 @@ export default function CategoriesPage() {
                         backgroundColor: "transparent",
                         borderRadius: 10,
                       }}
-                      onClick={() => setTopic(topic.id)}
+                      onClick={() => {
+                        setTopic(topic.id);
+                        setImageUrl(topic.imageName);
+                      }}
                     />
                   </Menu.Item>
                 ))}
@@ -156,13 +161,26 @@ export default function CategoriesPage() {
                         backgroundColor: "transparent",
                         borderRadius: 10,
                       }}
-                      onClick={() => setTopic(topic.id)}
+                      onClick={() => {
+                        setTopic(topic.id);
+                        setImageUrl(topic.imageName);
+                      }}
                     />
                   </Menu.Item>
                 ))}
               </Menu>
             </Grid.Column>
             <Grid.Column width={12}>
+              <Image
+                src={`images/${imageUrl}.jpg`}
+                style={{
+                  maxHeight: "400px",
+                  objectFit: "cover",
+                  display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              />
               <Table
                 inverted
                 style={{
@@ -195,7 +213,11 @@ export default function CategoriesPage() {
                         <Button
                           as="a"
                           onClick={() => navigate(`/user/${problem.senderId}`)}
-                          style={{ color: "white", background: "none", padding: 0 }}
+                          style={{
+                            color: "white",
+                            background: "none",
+                            padding: 0,
+                          }}
                         >
                           {problem.senderUsername}
                         </Button>

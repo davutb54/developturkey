@@ -95,7 +95,7 @@ export default function ProblemDetails() {
         console.error(error);
         setLoading(false);
       });
-  }, [problemId,refresh]);
+  }, [problemId, refresh]);
 
   useEffect(() => {
     let commentService = new CommentService();
@@ -242,8 +242,15 @@ export default function ProblemDetails() {
               style={{ marginLeft: parentId ? "2vw" : "0px", width: "100%" }} // width: "100%" eklendi
             >
               <Comment.Content>
-                <Comment.Author as="a" onClick={() => handleUserClick(comment.senderId)} style={{ cursor: "pointer" }}>
-                  {comment.senderIsExpert && <Icon name="star" color="yellow" />} {/* Uzman simgesi */}
+                <Comment.Author
+                  as="a"
+                  onClick={() => handleUserClick(comment.senderId)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {comment.senderIsExpert && (
+                    <Icon name="star" color="yellow" />
+                  )}{" "}
+                  {/* Uzman simgesi */}
                   {comment.senderUsername}
                 </Comment.Author>
                 <Comment.Metadata>
@@ -261,7 +268,8 @@ export default function ProblemDetails() {
                     Yanıtla
                   </Comment.Action>
                   {authenticatedUser &&
-                    authenticatedUser.id === comment.senderId && (
+                    (authenticatedUser.id === comment.senderId ||
+                      authenticatedUser.isAdmin) && (
                       <>
                         <Comment.Action
                           onClick={() => handleEditCommentClick(comment)}
@@ -399,7 +407,10 @@ export default function ProblemDetails() {
   };
 
   const handleEditProblemSubmit = () => {
-    if (editProblem.title.trim() !== "" && editProblem.description.trim() !== "") {
+    if (
+      editProblem.title.trim() !== "" &&
+      editProblem.description.trim() !== ""
+    ) {
       let problemService = new ProblemService();
       problemService
         .updateProblem({
@@ -546,14 +557,17 @@ export default function ProblemDetails() {
                       {problem.description}
                     </Card.Description>
                     {authenticatedUser != null &&
-                      authenticatedUser.id === problem?.senderId && (
+                      (authenticatedUser.id === problem?.senderId ||
+                        authenticatedUser.isAdmin) && (
                         <>
-                          <Button
-                            onClick={handleEditProblemClick}
-                            style={{ marginTop: "10px" }}
-                          >
-                            Düzenle
-                          </Button>
+                          {authenticatedUser.id === problem?.senderId && (
+                            <Button
+                              onClick={handleEditProblemClick}
+                              style={{ marginTop: "10px" }}
+                            >
+                              Düzenle
+                            </Button>
+                          )}
                           <Button
                             onClick={handleProblemDeleteClick}
                             style={{ marginTop: "10px" }}
@@ -637,8 +651,15 @@ export default function ProblemDetails() {
                   <>
                     <Header as="h4">{solution.title}</Header>
                     <Card.Meta>
-                      <span className="date" onClick={() => handleUserClick(solution.senderId)} style={{ cursor: "pointer" }}>
-                        {solution.senderIsExpert && <Icon name="star" color="yellow" />} {/* Uzman simgesi */}
+                      <span
+                        className="date"
+                        onClick={() => handleUserClick(solution.senderId)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {solution.senderIsExpert && (
+                          <Icon name="star" color="yellow" />
+                        )}{" "}
+                        {/* Uzman simgesi */}
                         {solution.senderUsername}
                       </span>
                     </Card.Meta>
@@ -674,8 +695,9 @@ export default function ProblemDetails() {
                         Yorum Yap
                       </Button>
                     )}
-                    {authenticatedUser != null &&
-                      authenticatedUser.id === solution.senderId && (
+                    {authenticatedUser &&
+                      (authenticatedUser.id === solution.senderId ||
+                        authenticatedUser.isAdmin) && (
                         <>
                           <Button
                             onClick={() => handleEditSolutionClick(solution)}
